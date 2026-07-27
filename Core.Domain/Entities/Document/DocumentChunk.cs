@@ -6,6 +6,7 @@ namespace RAGKnowledgeBase.Core.Domain.Entities.Document;
 public class DocumentChunk : Entity<Guid>
 {
     public Guid DocumentId { get; set; }
+    public Document? Document { get; set; }
     public int ChunkIndex { get; set; }
     public string Content { get; set; } = string.Empty;
     public int TokenCount { get; set; }
