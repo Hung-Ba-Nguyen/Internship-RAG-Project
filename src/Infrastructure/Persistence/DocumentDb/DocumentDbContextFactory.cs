@@ -9,7 +9,7 @@ public class DocumentDbContextFactory : IDesignTimeDbContextFactory<DocumentDbCo
     public DocumentDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<DocumentDbContext>();
-        optionsBuilder.UseSqlServer("Server=localhost;Database=DocumentDb;Trusted_Connection=True;MultipleActiveResultSets=true");
+        optionsBuilder.UseSqlServer("Server=localhost;Database=DocumentDb;User Id=sa;Password=123456;TrustServerCertificate=True;MultipleActiveResultSets=True");
 
         return new DocumentDbContext(optionsBuilder.Options);
     }
