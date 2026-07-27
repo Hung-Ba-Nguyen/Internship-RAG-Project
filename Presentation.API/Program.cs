@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using RAGKnowledgeBase.Infrastructure.Persistence.DocumentDb;
+
 namespace Presentation.API
 {
     public class Program
@@ -8,11 +11,12 @@ namespace Presentation.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<DocumentDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DocumentDb")));
 
             var app = builder.Build();
 
@@ -26,7 +30,6 @@ namespace Presentation.API
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
