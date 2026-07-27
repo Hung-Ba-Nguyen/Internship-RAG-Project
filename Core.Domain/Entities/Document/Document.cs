@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using RAGKnowledgeBase.Core.Domain.BuildingBlocks;

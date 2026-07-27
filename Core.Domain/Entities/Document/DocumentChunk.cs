@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using RAGKnowledgeBase.Core.Domain.BuildingBlocks;
 

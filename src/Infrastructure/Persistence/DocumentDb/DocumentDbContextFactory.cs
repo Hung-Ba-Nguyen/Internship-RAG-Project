@@ -1,6 +1,9 @@
 #nullable enable
+using System;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace RAGKnowledgeBase.Infrastructure.Persistence.DocumentDb;
 
@@ -8,8 +11,18 @@ public class DocumentDbContextFactory : IDesignTimeDbContextFactory<DocumentDbCo
 {
     public DocumentDbContext CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<DocumentDbContext>();
-        optionsBuilder.UseSqlServer("Server=localhost;Database=DocumentDb;User Id=sa;Password=123456;TrustServerCertificate=True;MultipleActiveResultSets=True");
+        IConfiguration configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        var connectionString =
+            configuration.GetConnectionString("DocumentDb");
+
+        var optionsBuilder =
+            new DbContextOptionsBuilder<DocumentDbContext>();
+
+        optionsBuilder.UseSqlServer(connectionString);
 
         return new DocumentDbContext(optionsBuilder.Options);
     }
