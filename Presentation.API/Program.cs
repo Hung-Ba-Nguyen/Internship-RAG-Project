@@ -1,4 +1,7 @@
 
+
+using RAGKnowledgeBase.Infrastructure.Identity.Extensions;
+
 namespace Presentation.API
 {
     public class Program
@@ -8,6 +11,9 @@ namespace Presentation.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            // Register Auth persistence (Identity + AuthDbContext)
+            builder.Services.AddAuthPersistence(builder.Configuration);
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
