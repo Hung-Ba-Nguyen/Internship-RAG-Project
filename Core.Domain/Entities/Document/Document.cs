@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using RAGKnowledgeBase.Core.Domain.BuildingBlocks;
@@ -28,10 +29,52 @@ public class Document : Entity<Guid>, IAggregateRoot
         Id = Guid.NewGuid();
     }
 
-    public Document(string title, string content, string source) : this()
+    public Document(string title, string content, string source, DocumentCategory? category = null) : this()
     {
         Title = title;
         Content = content;
         Source = source;
+        Category = category;
+    }
+
+    public void AddChunk(DocumentChunk chunk)
+    {
+        if (chunk == null) return;
+        chunk.DocumentId = Id;
+        Chunks.Add(chunk);
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public bool RemoveChunk(Guid chunkId)
+    {
+        var chunk = Chunks.Find(x => x.Id == chunkId);
+        if (chunk == null) return false;
+        Chunks.Remove(chunk);
+        UpdatedAt = DateTime.UtcNow;
+        return true;
+    }
+
+    public void UpdateContent(string content)
+    {
+        Content = content;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void UpdateStatus(DocumentStatus status)
+    {
+        Status = status;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void MarkDeleted()
+    {
+        IsDeleted = true;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void SetCategory(DocumentCategory? category)
+    {
+        Category = category;
+        UpdatedAt = DateTime.UtcNow;
     }
 }

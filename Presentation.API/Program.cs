@@ -1,6 +1,8 @@
 
 
 using RAGKnowledgeBase.Infrastructure.Identity.Extensions;
+using Microsoft.EntityFrameworkCore;
+using RAGKnowledgeBase.Infrastructure.Persistence.DocumentDb;
 
 namespace Presentation.API
 {
@@ -16,9 +18,11 @@ namespace Presentation.API
             builder.Services.AddAuthPersistence(builder.Configuration);
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<DocumentDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DocumentDb")));
 
             var app = builder.Build();
 
@@ -32,7 +36,6 @@ namespace Presentation.API
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
