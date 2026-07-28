@@ -1,4 +1,6 @@
 
+
+using RAGKnowledgeBase.Infrastructure.Identity.Extensions;
 using Microsoft.EntityFrameworkCore;
 using RAGKnowledgeBase.Infrastructure.Persistence.DocumentDb;
 
@@ -11,6 +13,10 @@ namespace Presentation.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            // Register Auth persistence (Identity + AuthDbContext)
+            builder.Services.AddAuthPersistence(builder.Configuration);
+
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
