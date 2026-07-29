@@ -36,6 +36,9 @@ public static class ServiceCollectionExtensions
         // Register default token providers (email/phone/password reset, etc.)
         identityBuilder.AddDefaultTokenProviders();
 
+        // Register AuthService
+        services.AddScoped<RAGKnowledgeBase.Core.Application.Auth.Interfaces.IAuthService, RAGKnowledgeBase.Infrastructure.Identity.Services.AuthService>();
+
         return services;
     }
 }
