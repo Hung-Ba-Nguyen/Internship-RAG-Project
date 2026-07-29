@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RAGKnowledgeBase.Infrastructure.Identity;
+using RAGKnowledgeBase.Infrastructure.Identity.Services;
+using RAGKnowledgeBase.Core.Application.Auth.Interfaces;
 
 namespace RAGKnowledgeBase.Infrastructure.Identity.Extensions;
 
@@ -23,6 +25,10 @@ public static class ServiceCollectionExtensions
         }
 
         services.AddDbContext<AuthDbContext>(opts => opts.UseSqlServer(connectionString));
+
+        // Configure JwtSettings and register JWT token generator
+        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+        services.AddSingleton<RAGKnowledgeBase.Core.Application.Auth.Interfaces.IJwtTokenGenerator, RAGKnowledgeBase.Infrastructure.Identity.Services.JwtTokenGenerator>();
 
         // Manually build Identity chain to avoid relying on AddIdentity extension resolution
         var identityBuilder = new Microsoft.AspNetCore.Identity.IdentityBuilder(typeof(ApplicationUser), typeof(IdentityRole<Guid>), services);
